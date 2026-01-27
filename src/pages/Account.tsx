@@ -3,13 +3,22 @@ import BottomNav from "@/components/BottomNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 import { 
   User, Mail, Phone, MapPin, Shield, Bell, 
-  FileText, HelpCircle, LogOut, ChevronRight 
+  FileText, HelpCircle, LogOut, ChevronRight,
+  Target, Wallet, CheckCircle2, AlertCircle
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useNavigate } from "react-router-dom";
 
 const Account = () => {
+  const navigate = useNavigate();
+  
+  // Mock KYC status - using as const to allow comparisons
+  const kycStatus = "pending" as "pending" | "verified" | "incomplete";
+  const riskProfileStatus = "incomplete" as "incomplete" | "complete";
+
   const menuItems = [
     {
       section: "Profile",
@@ -56,6 +65,80 @@ const Account = () => {
               </div>
               <Button variant="outline">Edit</Button>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* KYC & Risk Profile Status Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Card 
+            className={`cursor-pointer hover:shadow-md transition-shadow ${kycStatus === 'verified' ? 'border-green-500/30' : 'border-yellow-500/30 bg-yellow-50/50 dark:bg-yellow-950/20'}`}
+            onClick={() => navigate("/onboarding")}
+          >
+            <CardContent className="p-4 flex items-center gap-4">
+              <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${kycStatus === 'verified' ? 'bg-green-100 dark:bg-green-900' : 'bg-yellow-100 dark:bg-yellow-900'}`}>
+                {kycStatus === 'verified' ? (
+                  <CheckCircle2 className="h-6 w-6 text-green-600" />
+                ) : (
+                  <AlertCircle className="h-6 w-6 text-yellow-600" />
+                )}
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <p className="font-semibold">KYC Status</p>
+                  <Badge variant={kycStatus === 'verified' ? 'default' : 'outline'} className={kycStatus === 'verified' ? 'bg-green-600' : 'text-yellow-600 border-yellow-600'}>
+                    {kycStatus === 'verified' ? 'Verified' : 'Pending'}
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {kycStatus === 'verified' ? 'Your KYC is complete' : 'Complete your KYC to start investing'}
+                </p>
+              </div>
+              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+            </CardContent>
+          </Card>
+
+          <Card 
+            className={`cursor-pointer hover:shadow-md transition-shadow ${riskProfileStatus === 'complete' ? 'border-green-500/30' : 'border-primary/30 bg-primary/5'}`}
+            onClick={() => navigate("/risk-profile")}
+          >
+            <CardContent className="p-4 flex items-center gap-4">
+              <div className={`h-12 w-12 rounded-xl flex items-center justify-center ${riskProfileStatus === 'complete' ? 'bg-green-100 dark:bg-green-900' : 'bg-primary/10'}`}>
+                <Target className={`h-6 w-6 ${riskProfileStatus === 'complete' ? 'text-green-600' : 'text-primary'}`} />
+              </div>
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <p className="font-semibold">Risk Profile</p>
+                  <Badge variant={riskProfileStatus === 'complete' ? 'default' : 'outline'} className={riskProfileStatus === 'complete' ? 'bg-green-600' : ''}>
+                    {riskProfileStatus === 'complete' ? 'Moderate' : 'Incomplete'}
+                  </Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  {riskProfileStatus === 'complete' ? 'Based on your assessment' : 'Take quiz to get personalized recommendations'}
+                </p>
+              </div>
+              <ChevronRight className="h-5 w-5 text-muted-foreground" />
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Borrowing Power Card */}
+        <Card 
+          className="cursor-pointer hover:shadow-md transition-shadow bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20"
+          onClick={() => navigate("/borrowing-power")}
+        >
+          <CardContent className="p-4 flex items-center gap-4">
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Wallet className="h-6 w-6 text-primary" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold">Borrowing Power</p>
+              <p className="text-sm text-muted-foreground">Check how much you can borrow</p>
+            </div>
+            <div className="text-right">
+              <p className="font-bold text-primary">₹7,25,000</p>
+              <p className="text-xs text-muted-foreground">Available</p>
+            </div>
+            <ChevronRight className="h-5 w-5 text-muted-foreground" />
           </CardContent>
         </Card>
 
