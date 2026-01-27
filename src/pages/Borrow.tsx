@@ -3,10 +3,12 @@ import BottomNav from "@/components/BottomNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
-import { DollarSign, Calculator, Clock, Percent } from "lucide-react";
+import { DollarSign, Calculator, Clock, Percent, Wallet, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Borrow = () => {
+  const navigate = useNavigate();
   const [loanAmount, setLoanAmount] = useState([500000]);
   const [tenure, setTenure] = useState([24]);
 
@@ -51,6 +53,25 @@ const Borrow = () => {
           <h1 className="text-2xl font-bold">Borrow</h1>
           <p className="text-muted-foreground">Get quick loans at competitive rates</p>
         </div>
+
+        {/* Borrowing Power Card */}
+        <Card 
+          className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 cursor-pointer hover:shadow-md transition-shadow"
+          onClick={() => navigate("/borrowing-power")}
+        >
+          <CardContent className="p-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                <Wallet className="h-6 w-6 text-primary" />
+              </div>
+              <div>
+                <p className="font-semibold">Check Your Borrowing Power</p>
+                <p className="text-sm text-muted-foreground">See how much you can borrow based on your portfolio & income</p>
+              </div>
+            </div>
+            <ArrowRight className="h-5 w-5 text-primary" />
+          </CardContent>
+        </Card>
 
         <Card className="bg-primary/5 border-primary/20">
           <CardHeader>
