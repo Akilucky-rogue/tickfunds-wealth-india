@@ -7,7 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { 
   User, Mail, Phone, MapPin, Shield, Bell, 
   FileText, HelpCircle, LogOut, ChevronRight,
-  Target, Wallet, CheckCircle2, AlertCircle
+  Target, Wallet, CheckCircle2, AlertCircle,
+  Users, Heart, ShoppingCart, Settings, Crown
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
@@ -15,16 +16,25 @@ import { useNavigate } from "react-router-dom";
 const Account = () => {
   const navigate = useNavigate();
   
-  // Mock KYC status - using as const to allow comparisons
+  // Mock KYC status
   const kycStatus = "pending" as "pending" | "verified" | "incomplete";
   const riskProfileStatus = "incomplete" as "incomplete" | "complete";
+  const currentPlan = "Family Multiple";
 
   const menuItems = [
+    {
+      section: "Family & Accounts",
+      items: [
+        { icon: Users, label: "Family Members", href: "/family", badge: "3" },
+        { icon: Heart, label: "Wishlist", href: "/wishlist" },
+        { icon: ShoppingCart, label: "Orders", href: "/orders" },
+      ]
+    },
     {
       section: "Profile",
       items: [
         { icon: User, label: "Personal Information", href: "#" },
-        { icon: Mail, label: "Email & Password", href: "#" },
+        { icon: Mail, label: "Email & Password", href: "/change-password" },
         { icon: Phone, label: "Phone Number", href: "#" },
         { icon: MapPin, label: "Address", href: "#" }
       ]
@@ -32,15 +42,16 @@ const Account = () => {
     {
       section: "Preferences",
       items: [
-        { icon: Bell, label: "Notifications", href: "#" },
-        { icon: Shield, label: "Privacy & Security", href: "#" }
+        { icon: Bell, label: "Notifications", href: "/settings" },
+        { icon: Shield, label: "Privacy & Security", href: "/settings" },
+        { icon: Settings, label: "Settings", href: "/settings" }
       ]
     },
     {
       section: "Support",
       items: [
         { icon: FileText, label: "Documents", href: "#" },
-        { icon: HelpCircle, label: "Help & Support", href: "#" }
+        { icon: HelpCircle, label: "Help & Support", href: "/support" }
       ]
     }
   ];
@@ -63,8 +74,28 @@ const Account = () => {
                 <p className="text-sm text-muted-foreground">bhavesh.vora@example.com</p>
                 <p className="text-sm text-muted-foreground">+91 98765 43210</p>
               </div>
-              <Button variant="outline">Edit</Button>
+              <Button variant="outline" onClick={() => navigate("/settings")}>
+                <Settings className="h-4 w-4" />
+              </Button>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Plan Card */}
+        <Card 
+          className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 cursor-pointer hover:shadow-md transition-shadow"
+          onClick={() => navigate("/settings")}
+        >
+          <CardContent className="p-4 flex items-center gap-4">
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Crown className="h-6 w-6 text-primary" />
+            </div>
+            <div className="flex-1">
+              <p className="font-semibold">Current Plan</p>
+              <p className="text-sm text-muted-foreground">{currentPlan}</p>
+            </div>
+            <Badge className="bg-primary">Active</Badge>
+            <ChevronRight className="h-5 w-5 text-muted-foreground" />
           </CardContent>
         </Card>
 
@@ -170,12 +201,20 @@ const Account = () => {
               <CardContent className="space-y-1">
                 {section.items.map((item, itemIndex) => (
                   <div key={itemIndex}>
-                    <button className="w-full flex items-center justify-between p-3 hover:bg-muted rounded-lg transition-colors">
+                    <button 
+                      className="w-full flex items-center justify-between p-3 hover:bg-muted rounded-lg transition-colors"
+                      onClick={() => navigate(item.href)}
+                    >
                       <div className="flex items-center gap-3">
                         <item.icon className="h-5 w-5 text-muted-foreground" />
                         <span className="font-medium">{item.label}</span>
                       </div>
-                      <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      <div className="flex items-center gap-2">
+                        {item.badge && (
+                          <Badge variant="secondary">{item.badge}</Badge>
+                        )}
+                        <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                      </div>
                     </button>
                     {itemIndex < section.items.length - 1 && <Separator />}
                   </div>
