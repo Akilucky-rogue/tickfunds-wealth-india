@@ -3,7 +3,7 @@ import BottomNav from "@/components/BottomNav";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ChevronRight, TrendingUp, Scale } from "lucide-react";
+import { Search, ChevronRight, TrendingUp, Scale, Heart, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useMemo } from "react";
@@ -15,6 +15,7 @@ import FundFilterSheet, { FilterState } from "@/components/FundFilterSheet";
 const Invest = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const [activeProduct, setActiveProduct] = useState("MF");
   const [activeCategory, setActiveCategory] = useState("Equity");
   const [activeSubCategory, setActiveSubCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -30,7 +31,13 @@ const Invest = () => {
     sortOrder: "desc"
   });
 
-  const productTabs = ["MF", "SIF", "FD", "Metal", "Bonds"];
+  const productTabs = [
+    { id: "MF", label: "MF", route: null },
+    { id: "SIF", label: "SIF", route: null },
+    { id: "FD", label: "FD", route: "/fd" },
+    { id: "Metal", label: "Metal", route: "/gold" },
+    { id: "Bonds", label: "Bonds", route: "/bonds" },
+  ];
   const categoryTabs = ["Equity", "Debt", "Hybrid", "Solution", "Others"];
   
   const subCategories: Record<string, string[]> = {
@@ -177,16 +184,35 @@ const Invest = () => {
       <Navigation />
       
       <main className="container px-4 py-6 space-y-6">
+        {/* Quick Actions */}
+        <div className="flex gap-2 justify-end">
+          <Button variant="outline" size="sm" onClick={() => navigate("/wishlist")}>
+            <Heart className="h-4 w-4 mr-2" />
+            Wishlist
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => navigate("/orders")}>
+            <ShoppingCart className="h-4 w-4 mr-2" />
+            Orders
+          </Button>
+        </div>
+
         {/* Product Tabs */}
         <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4">
           {productTabs.map((tab) => (
             <Button
-              key={tab}
-              variant={tab === "MF" ? "default" : "outline"}
+              key={tab.id}
+              variant={activeProduct === tab.id ? "default" : "outline"}
               size="sm"
               className="whitespace-nowrap"
+              onClick={() => {
+                if (tab.route) {
+                  navigate(tab.route);
+                } else {
+                  setActiveProduct(tab.id);
+                }
+              }}
             >
-              {tab}
+              {tab.label}
             </Button>
           ))}
         </div>
@@ -410,6 +436,24 @@ const Invest = () => {
                 ))}
               </div>
             </div>
+
+            {/* PMS & AIF */}
+            <Card 
+              className="bg-gradient-to-r from-primary/10 to-primary/5 border-primary/20 cursor-pointer hover:shadow-md transition-shadow"
+              onClick={() => navigate("/pms-aif")}
+            >
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold">PMS & AIF</h3>
+                    <p className="text-sm text-muted-foreground">
+                      For HNIs - Min ₹50L for PMS, ₹1Cr for AIF
+                    </p>
+                  </div>
+                  <Button>Explore</Button>
+                </div>
+              </CardContent>
+            </Card>
           </>
         )}
       </main>
