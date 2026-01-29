@@ -25,6 +25,7 @@ import Bonds from "./pages/Bonds";
 import DigitalGold from "./pages/DigitalGold";
 import PMSAIF from "./pages/PMSAIF";
 import Support from "./pages/Support";
+import Alerts from "./pages/Alerts";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -58,6 +59,7 @@ const App = () => (
           <Route path="/gold" element={<DigitalGold />} />
           <Route path="/pms-aif" element={<PMSAIF />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/alerts" element={<Alerts />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
