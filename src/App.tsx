@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SplashScreen from "./components/SplashScreen";
 import Index from "./pages/Index";
 import Invest from "./pages/Invest";
+import MutualFunds from "./pages/MutualFunds";
 import Borrow from "./pages/Borrow";
 import Portfolio from "./pages/Portfolio";
 import Account from "./pages/Account";
@@ -45,6 +46,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/invest" element={<Invest />} />
+            <Route path="/invest/mf" element={<MutualFunds />} />
             <Route path="/fund/:id" element={<FundDetail />} />
             <Route path="/compare" element={<CompareFunds />} />
             <Route path="/borrow" element={<Borrow />} />
