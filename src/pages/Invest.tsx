@@ -41,7 +41,6 @@ const Invest = () => {
 
   // Investment sections
   const investSections = [
-    { id: "wishlist", label: "Wish List", icon: Heart },
     { id: "mf", label: "Mutual Funds", icon: BarChart3 },
     { id: "fd", label: "Company FD", icon: Layers },
     { id: "bonds", label: "Bonds", icon: TrendingUp },
@@ -171,8 +170,7 @@ const Invest = () => {
 
   // Handle section navigation
   const handleSectionClick = (sectionId: string) => {
-    if (sectionId === "wishlist") navigate("/wishlist");
-    else if (sectionId === "fd") navigate("/fd");
+    if (sectionId === "fd") navigate("/fd");
     else if (sectionId === "bonds") navigate("/bonds");
     else if (sectionId === "gold") navigate("/gold");
     else if (sectionId === "pms") navigate("/pms-aif");
